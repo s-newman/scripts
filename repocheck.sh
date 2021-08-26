@@ -4,7 +4,7 @@
 #	  repocheck - Check all git repos under a given path for changes
 #
 # SYNOPSIS
-#	  template <path>
+#	  repocheck <path>
 #
 # OPTIONS
 #	  <path>
@@ -24,7 +24,26 @@
 #
 #------------------------------------------------------------------------------
 
-repos=$(find "${1}" -type d -name ".git" | sed 's/\.git$//')
+usage() {
+  echo "USAGE: repocheck <path>"
+  exit "${1}"
+}
+
+if [ "$#" != "1" ]; then
+  usage 1
+fi
+
+if [ "${1}" = "-h" ]; then
+  usage 0
+fi
+
+path=$(echo "${1}" | sed 's/\/$//')
+if [ ! -d "${path}" ]; then
+  echo "can't find directory ${path}"
+  exit 1
+fi
+
+repos=$(find "${path}" -type d -name ".git" | sed 's/\.git$//')
 cwd=$(pwd)
 
 print_list() {
