@@ -20,6 +20,8 @@
 # EXAMPLES
 #	  repocheck ~/src
 #
+# Created 25 August 2021
+#
 #------------------------------------------------------------------------------
 
 repos=$(find "${1}" -type d -name ".git" | sed 's/\.git$//')

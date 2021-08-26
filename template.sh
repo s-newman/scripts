@@ -19,6 +19,8 @@
 # BUGS
 #	  List any known bugs.
 #
+# Created DD Month YYYY
+#
 #------------------------------------------------------------------------------
 
 echo "This is a template script!"
