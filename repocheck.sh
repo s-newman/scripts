@@ -1,6 +1,26 @@
 #!/bin/bash
+#------------------------------------------------------------------------------
+# NAME
+#	  repocheck - Check all git repos under a given path for changes
 #
-# Check all git repos under a given path for changes.
+# SYNOPSIS
+#	  template <path>
+#
+# OPTIONS
+#	  <path>
+#	  	The path to a git repo or a directory containing git repos.
+#
+# DESCRIPTION
+#	  Finds all git repositories under the given directory and searches them to
+#   find uncommitted changes, unpushed branches, local branches that can be
+#   deleted, and local branches that need to pull changes from remote. Also
+#   will fetch from all remotes and prune any remote tracking branches that
+#   have been deleted on the remote.
+#
+# EXAMPLES
+#	  repocheck ~/src
+#
+#------------------------------------------------------------------------------
 
 repos=$(find "${1}" -type d -name ".git" | sed 's/\.git$//')
 cwd=$(pwd)
@@ -48,7 +68,7 @@ for repo in ${repos}; do
 
   output=$(git branch -v | sed 's/^* //' | awk '$3 == "[behind" {print $1}')
   if [ -n "${output}" ]; then
-    echo "[*] ${repo} local branches behind upstream:"
+    echo "[*] ${repo} local branches behind remote:"
     print_list "${output}"
   fi
 
