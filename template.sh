@@ -1,24 +1,26 @@
 #!/bin/bash
 #------------------------------------------------------------------------------
 # NAME
-#	template - a template script
+#	  template - A template script
 #
 # SYNOPSIS
-#	template [options...] PATH
+#	  template [options...] <required>
 #
 # OPTIONS
-#	-h, --help
-#		Show help message and quit.
+#	  -h, --help
+#	  	Show help message and quit.
 #
 # DESCRIPTION
-#	A textual description of the functioning of the command or function.
+#	  A textual description of the functioning of the command or function.
 #
 # EXAMPLES
-#	Some examples of common usage.
+#	  Some examples of common usage.
 #
 # BUGS
-#	List known bugs.
+#	  List any known bugs.
 #
 #------------------------------------------------------------------------------
 
 echo "This is a template script!"
+
+# Remember to run shellcheck on your script!
