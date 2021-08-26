@@ -1,0 +1,63 @@
+#!/usr/bin/env python3
+"""
+vlanprefix
+
+Created:
+    29 June 2018
+
+Description:
+    A utility to create a prefix in the 10.0.0.0/8 network based on the site
+    ID and VLAN ID.  This subnetting scheme supports the full range of VLAN IDs
+    up to 64 sites.
+
+    Scheme:
+    0000 0101.XXXX XX YY.YYYY YYYY.YY ZZ ZZZZ
+    *-------* *-----* *-------------* *-----*
+        |       |        |              |
+    First       |      VLAN ID         Hosts
+    octet (10)  |      (1-4095)        /26 network - 62 hosts possible
+                |
+            Site ID (1-64)
+    
+    Note that one will be subtracted from Site IDs, since NetBox starts the
+    site ID at index 1.
+"""
+import sys
+
+
+def main():
+    # Check arguments
+    if len(sys.argv) != 3:
+        print('Please enter a site ID (1-64) followed by a VLAN ID (1-4095).')
+        sys.exit(1)
+    elif not sys.argv[1].isdigit() or not sys.argv[2].isdigit():
+        print('Both arguments must be numbers!')
+        sys.exit(1)
+    elif int(sys.argv[1]) > 64 or int(sys.argv[1]) < 1:
+        print('Site ID must be in the range of 1-64 (inclusive).')
+        sys.exit(1)
+    elif int(sys.argv[2]) > 4095 or int(sys.argv[2]) < 1:
+        print('VLAN ID must be in the range of 1-4095 (inclusive).')
+
+    # Save shifted args
+    site = (int(sys.argv[1]) - 1) << 18
+    vlan = int(sys.argv[2]) << 6
+
+    # Mask together IDs
+    network = site | vlan
+
+    # Split into octets
+    octets = [
+        10,
+        (network & 16711680) >> 16,
+        (network & 65280) >> 8,
+        (network & 255)
+    ]
+
+    # Print out network ID
+    print('{}.{}.{}.{}/26'.format(octets[0], octets[1], octets[2], octets[3]))
+
+
+if __name__ == '__main__':
+    main()
+

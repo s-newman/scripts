@@ -1,0 +1,2 @@
+#!/bin/bash
+xrandr --output eDP1 --mode 1920x1080 --pos 0x1440 --output DP2-2 --mode 2560x1440 --pos 1920x0 --output DP2-3 --mode 2560x1440 --pos 4480x0 --rotate right
