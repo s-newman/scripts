@@ -31,7 +31,7 @@ param(
     [string]$SSHPublicKeyPath = "C:\Users\Sean\Virtual Machines\homelab.pub",
 
     # Path to the oscdimg.exe binary
-    [string]$oscdimgPath = "C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Deployment Tools\amd64\Oscdimg\oscdimg.exe",
+    [string]$oscdimgPath = "C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Deployment Tools\amd64\Oscdimg\oscdimg.exe"
 )
 
 function Get-Info {
