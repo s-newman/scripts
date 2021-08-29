@@ -48,7 +48,7 @@ function Get-Info {
 }
 
 function Setup-VM {
-    param($VMObject, $basepath, $parent, $sshPubKey)
+    param($VMObject, $basepath, $sshPubKey)
 
     $vmname = Get-NextVMNumber($VMObject.name)
     $diskSize = $VMObject.diskSize
@@ -56,7 +56,7 @@ function Setup-VM {
 
     Write-Host "Creating VM: $vmname"
 
-    Add-VMVHD -vmname $vmname -path $path -parent $parent -diskSize $diskSize
+    Add-VMVHD -vmname $vmname -path $path -diskSize $diskSize
     Create-VM -VMObject $VMObject -vmname $vmname -path $path
     Create-CloudInit -vmname $vmname -path $path -sshPubKey $sshPubKey
     Set-VMProperties -VMObject $VMObject -vmname $vmname
@@ -189,7 +189,7 @@ $VMInfo = Get-Info
 Write-Host "Starting timer.`n"
 $stopwatch =  [system.diagnostics.stopwatch]::StartNew()
 
-Setup-VM -VMObject $VMInfo -basepath $VMFolder -parent -sshPubKey $sshPubKey
+Setup-VM -VMObject $VMInfo -basepath $VMFolder -sshPubKey $sshPubKey
 
 $stopwatch.Stop()
 Write-host "Total time : $([math]::Round($stopwatch.Elapsed.TotalSeconds,0)) seconds for $many Virtual machines."
