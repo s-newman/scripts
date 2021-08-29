@@ -99,9 +99,11 @@ $fullname = "Local Administrator"
 $userdata = @"
 #cloud-config
 users:
+  - default
   - name: $username
     gecos: $fullname
     sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: users, admin
     ssh_import_id: None
     lock_passwd: true
     ssh_authorized_keys:
