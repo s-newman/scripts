@@ -114,7 +114,7 @@ users:
     sc "$($path)\Bits\user-data" ([byte[]][char[]] "$userdata") -Encoding Byte
 
     # Create meta data ISO image - this thing apparently outputs in stderr so it shows as red but it's not errors, it's just the progress for it.
-    $oscdimgPath "$($path)\Bits" $metaDataIso -j2 -lcidata
+    & $oscdimgPath "$($path)\Bits" $metaDataIso -j2 -lcidata
 }
 
 function Get-NextVMNumber {
