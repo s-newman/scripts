@@ -109,7 +109,7 @@ users:
     ssh_authorized_keys:
       - $sshPubKey
 runcmd:
-  - curl http://10.0.4.139:8000/hello_world.html
+  - wget http://10.0.4.139:8000/hello_world.html
 "@
 
     # Output meta and user data to files
