@@ -23,10 +23,6 @@ param(
     # Path to the folder that VMs are stored in
     [string]$VMFolder = "C:\Users\Sean\Virtual Machines\",
 
-    # Path to the disk image file the VM will be created from
-    [Parameter(Mandatory = $true)]
-    [string]$BaseDiskFile,
-
     # Path to the SSH public key that will be added for the base user
     [string]$SSHPublicKeyPath = "C:\Users\Sean\Virtual Machines\homelab.pub",
 
@@ -134,9 +130,19 @@ function Get-NextVMNumber {
 }
 
 function Add-VMVHD {
-    param($vmname, $path, $parent, $diskSize)
+    param($vmname, $path, $diskSize)
 
     $sizeInBytes = $diskSize * 1073741824
+
+    $disks = Get-ChildItem -Path "$VMFolder\Base Images\"
+    $options = [System.Collections.ArrayList]::new()
+    foreach($disk in $disks) {
+        options.Add([System.Management.Automation.Host.ChoiceDescription]($disk.Name))
+    }
+    $title = "Base Image"
+    $message = "Select a base image to create the VM from."
+    $choice = $host.ui.PromptForChoice($title, $message, $options, 0)
+    $parent = "$VMFolder\Base Images\$choice"
 
     if(-not (Test-Path "$path\$vmname.vhdx")) {
 
@@ -183,7 +189,7 @@ $VMInfo = Get-Info
 Write-Host "Starting timer.`n"
 $stopwatch =  [system.diagnostics.stopwatch]::StartNew()
 
-Setup-VM -VMObject $VMInfo -basepath $VMFolder -parent $BaseDiskFile -sshPubKey $sshPubKey
+Setup-VM -VMObject $VMInfo -basepath $VMFolder -parent -sshPubKey $sshPubKey
 
 $stopwatch.Stop()
 Write-host "Total time : $([math]::Round($stopwatch.Elapsed.TotalSeconds,0)) seconds for $many Virtual machines."
