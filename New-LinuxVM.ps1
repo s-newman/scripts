@@ -135,9 +135,9 @@ function Add-VMVHD {
     $sizeInBytes = $diskSize * 1073741824
 
     $disks = Get-ChildItem -Path "$VMFolder\Base Images\"
-    $options = [System.Collections.ArrayList]::new()
+    $options = [System.Managment.Automation.Host.ChoiceDescription[]]@()
     foreach($disk in $disks) {
-        $options.Add([System.Management.Automation.Host.ChoiceDescription]($disk.Name))
+        $options += $disk.name
     }
     $title = "Base Image"
     $message = "Select a base image to create the VM from."
