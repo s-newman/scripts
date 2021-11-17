@@ -59,7 +59,7 @@ Configure parallel downloading to speed up the first-time installation. In `/etc
 
 Install base set of packages
 ```shell
-pacstrap /mnt base base-devel linux linux-firmware grub efibootmgr intel-ucode sudo zsh tmux vi vim networkmanager wpa_supplicant man-db man-pages texinfo gnome gnome-shell-extensions gnome-tweaks htop python ipython deja-dup mypy python-black flake8 alacritty bind zsh-autosuggestions zsh-completions zsh-syntax-highlighting tree firefox noto-fonts gnome-shell-extension-gtile wireshark-qt docker docker-compose virtualbox virtualbox-host-modules-arch git
+pacstrap /mnt base base-devel linux linux-firmware grub efibootmgr intel-ucode sudo zsh tmux vi vim networkmanager wpa_supplicant man-db man-pages texinfo gnome gnome-shell-extensions gnome-tweaks htop python ipython mypy python-black flake8 alacritty bind zsh-autosuggestions zsh-completions zsh-syntax-highlighting tree firefox noto-fonts gnome-shell-extension-gtile wireshark-qt docker docker-compose virtualbox virtualbox-host-modules-arch git
 ```
 
 Other possibly useful packages (depends on environment):
@@ -150,7 +150,7 @@ yay --answerclean All --answerdiff None --answeredit None --removemake --cleanaf
 
 Install AUR packages
 ```shell
-yay -S visual-studio-code-bin nerd-fonts-complete zsh-theme-powerlevel10k-git zsh-you-should-use gnome-shell-extension-dash-to-dock plymouth-git gdm-plymouth plymouth-theme-arch-logo rate-mirrors
+yay -S visual-studio-code-bin nerd-fonts-complete zsh-theme-powerlevel10k-git zsh-you-should-use gnome-shell-extension-dash-to-dock rate-mirrors
 ```
 
 Add the following content to `~/.config/systemd/user/maintenance.timer`:
@@ -182,12 +182,12 @@ Return to the root user within the chroot and finish with the following steps.
 
 Configure your initramfs hooks. The HOOKS line in `/etc/mkinitcpio.conf` should look like this:
 ```
-HOOKS=(base udev plymouth autodetect keyboard keymap modconf block plymouth-encrypt filesystems fsck)
+HOOKS=(base udev autodetect keyboard keymap modconf block encrypt filesystems fsck)
 ```
 
-Configure plymouth theme and build initramfs:
+Build initramfs:
 ```shell
-plymouth-set-default-theme -R arch-logo
+mkinitcpio -P
 ```
 
 Enable parallel pacman downloads by uncommenting the following line in `/etc/pacman.conf`:
@@ -202,7 +202,7 @@ blkid /dev/sda2 | awk '{print $2}' | tr -d '"' | tee -a /etc/default/grub
 
 Delete the `GRUB_CMD_LINUX_DEFAULT` line in `/etc/default/grub` and configure the kernel parameters line with the following:
 ```
-GRUB_CMDLINE_LINUX="cryptdevice=UUID=00000000-1111-2222-3333-444444444444:cryptroot root=/dev/mapper/cryptroot quiet splash vt.global_cursor_default=0"
+GRUB_CMDLINE_LINUX="cryptdevice=UUID=00000000-1111-2222-3333-444444444444:cryptroot root=/dev/mapper/cryptroot
 ```
 
 Install grub to the EFI partition:
